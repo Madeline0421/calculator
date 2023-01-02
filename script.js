@@ -26,3 +26,16 @@ function operate(operator, num1, num2) {
             return divide(num1, num2);
     }
 }
+
+let items = document.querySelectorAll('button');
+let display = document.querySelector('#display');
+
+
+console.log(items[0]);
+
+items.forEach((item) => {
+    console.log(item.textContent);
+    item.addEventListener('click', () => {
+        display.textContent += item.textContent;
+    });
+});
