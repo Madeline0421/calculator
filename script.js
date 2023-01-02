@@ -29,13 +29,34 @@ function operate(operator, num1, num2) {
 
 let items = document.querySelectorAll('button');
 let display = document.querySelector('#display');
-
-
-console.log(items[0]);
+let operators = document.querySelectorAll('.operator');
+let equalSign = document.querySelector('#equal-sign');
+let clear = document.querySelector('#clear');
+let arr;
+let operand;
 
 items.forEach((item) => {
-    console.log(item.textContent);
     item.addEventListener('click', () => {
         display.textContent += item.textContent;
     });
 });
+
+operators.forEach((operator) => {
+    operator.addEventListener('click', () => {
+        operand = operator.textContent;
+    });
+});
+
+equalSign.addEventListener('click', () => {
+    const arr = display.textContent.split(/[+-/*=]/);
+    console.log(arr[0]);
+    console.log(arr[1]);
+    let num1 = arr[0];
+    let num2 = arr[1];
+    display.textContent += (operate(operand, num1, num2));
+    display.textContent += "\n";
+});
+
+clear.addEventListener('click', () => {
+    display.textContent = "";
+})
