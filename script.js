@@ -9,7 +9,7 @@ class Calculator {
     clear() {
         this.previousOperand = '';
         this.currentOperand = '';
-        this.operator = null;
+        this.operator = '';
     }
 
     add(num1, num2) {
@@ -28,22 +28,38 @@ class Calculator {
         return num1 / num2; 
     }
     
-    // operate(operator, num1, num2) {
-    //     switch(operator) {
-    //         case '+':
-    //             return add(num1, num2);
-    //         case '-':
-    //             return subtract(num1, num2);
-    //         case '*':
-    //             return multiply(num1, num2);
-    //         case '/':
-    //             return divide(num1, num2);
-    //     }
-    // }
+    calculate() {
+        this.previousOperand = parseInt(this.previousOperand);
+        this.currentOperand = parseInt(this.currentOperand);
+        let total;
+        switch(this.operator) {
+            case '+':
+                total = this.add(this.previousOperand, this.currentOperand);
+                break;
+            case '-':
+                total = this.subtract(this.previousOperand, this.currentOperand);
+                break;
+            case '*':
+                total = this.multiply(this.previousOperand, this.currentOperand);
+                break;
+            case '/':
+                total = this.divide(this.previousOperand, this.currentOperand);
+                break;
+        }
+        this.previousOperand = total; 
+        this.currentOperand = '';
+        this.operator = '';
+        return total;
+    }
 
     chooseOperator(operator) { 
-        //if an operator is clicked, take the previous inputs and set that
-        //to the operand
+        if (this.previousOperand == '') { 
+            this.previousOperand = this.currentOperand;
+            this.operator = operator;
+            this.currentOperand = '';
+        } else { 
+            this.operator = operator;
+        }
     }
 
     appendNumber(number) { 
@@ -52,37 +68,35 @@ class Calculator {
 
 }
 
-
-
-let items = document.querySelectorAll('button');
 let numbers = document.querySelectorAll('.number');
 let display = document.querySelector('#display');
 let operators = document.querySelectorAll('.operator');
 let equalSign = document.querySelector('#equal-sign');
 let clear = document.querySelector('#clear');
 
-let calculator = new Calculator();
-
-calculator.currentOperand = 7;
-
-calculator.appendNumber(5);
-console.log(calculator.currentOperand);
-
-items.forEach((item) => {
-    item.addEventListener('click', () => {
-        display.textContent += item.textContent;
-    });
-});
-
+let calculator = new Calculator('', '', null);
 operators.forEach((operator) => {
     operator.addEventListener('click', () => {
-        calculator.operator = operator.textContent;
+        calculator.chooseOperator(operator.innerHTML);
     });
 });
 
 numbers.forEach((number) => { 
     number.addEventListener('click', () => {
         calculator.appendNumber(number.innerHTML);
-        console.log(calculator.currentOperand);
     });
+});
+
+equalSign.addEventListener('click', () => {
+    console.log("prev:" + calculator.previousOperand);
+    console.log("current: " + calculator.currentOperand);
+    console.log("operator: " + calculator.operator);
+    console.log(calculator.calculate());
+    console.log("prev:" + calculator.previousOperand);
+    console.log("current: " + calculator.currentOperand);
+    console.log("operator: " + calculator.operator);
+});
+
+clear.addEventListener('click', () => { 
+    calculator.clear();
 });
