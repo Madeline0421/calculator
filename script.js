@@ -1,39 +1,72 @@
-function add(num1, num2) {
-    return num1 + num2;
-}
+class Calculator { 
 
-function subtract(num1, num2) {
-    return num1 - num2;
-}
-
-function multiply(num1, num2) {
-    return num1 * num2;
-}
-
-function divide(num1, num2) {
-    return num1 / num2; 
-}
-
-function operate(operator, num1, num2) {
-    switch(operator) {
-        case '+':
-            return add(num1, num2);
-        case '-':
-            return subtract(num1, num2);
-        case '*':
-            return multiply(num1, num2);
-        case '/':
-            return divide(num1, num2);
+    constructor(previousOperand, currentOperand, operator) {
+        this.previousOperand = previousOperand;
+        this.currentOperand = currentOperand;
+        this.operator = operator;
     }
+
+    clear() {
+        this.previousOperand = '';
+        this.currentOperand = '';
+        this.operator = null;
+    }
+
+    add(num1, num2) {
+        return num1 + num2;
+    }
+    
+    subtract(num1, num2) {
+        return num1 - num2;
+    }
+    
+    multiply(num1, num2) {
+        return num1 * num2;
+    }
+    
+    divide(num1, num2) {
+        return num1 / num2; 
+    }
+    
+    // operate(operator, num1, num2) {
+    //     switch(operator) {
+    //         case '+':
+    //             return add(num1, num2);
+    //         case '-':
+    //             return subtract(num1, num2);
+    //         case '*':
+    //             return multiply(num1, num2);
+    //         case '/':
+    //             return divide(num1, num2);
+    //     }
+    // }
+
+    chooseOperator(operator) { 
+        //if an operator is clicked, take the previous inputs and set that
+        //to the operand
+    }
+
+    appendNumber(number) { 
+        this.currentOperand += number.toString(); 
+    }
+
 }
+
+
 
 let items = document.querySelectorAll('button');
+let numbers = document.querySelectorAll('.number');
 let display = document.querySelector('#display');
 let operators = document.querySelectorAll('.operator');
 let equalSign = document.querySelector('#equal-sign');
 let clear = document.querySelector('#clear');
-let arr;
-let operand;
+
+let calculator = new Calculator();
+
+calculator.currentOperand = 7;
+
+calculator.appendNumber(5);
+console.log(calculator.currentOperand);
 
 items.forEach((item) => {
     item.addEventListener('click', () => {
@@ -43,20 +76,13 @@ items.forEach((item) => {
 
 operators.forEach((operator) => {
     operator.addEventListener('click', () => {
-        operand = operator.textContent;
+        calculator.operator = operator.textContent;
     });
 });
 
-equalSign.addEventListener('click', () => {
-    const arr = display.textContent.split(/[+-/*=]/);
-    console.log(arr[0]);
-    console.log(arr[1]);
-    let num1 = arr[0];
-    let num2 = arr[1];
-    display.textContent += (operate(operand, num1, num2));
-    display.textContent += "\n";
+numbers.forEach((number) => { 
+    number.addEventListener('click', () => {
+        calculator.appendNumber(number.innerHTML);
+        console.log(calculator.currentOperand);
+    });
 });
-
-clear.addEventListener('click', () => {
-    display.textContent = "";
-})
