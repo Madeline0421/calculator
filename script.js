@@ -30,8 +30,8 @@ class Calculator {
     }
     
     calculate() {
-        this.previousOperand = parseInt(this.previousOperand);
-        this.currentOperand = parseInt(this.currentOperand);
+        this.previousOperand = parseFloat(this.previousOperand);
+        this.currentOperand = parseFloat(this.currentOperand);
         let total;
         switch(this.operator) {
             case '+':
@@ -148,6 +148,10 @@ function addCharacters(e) {
         removeDisplay();
     } else if (e.key == "C" || e.key == "c") { 
         calculator.clear(); 
+    } else if (e.key == ".") {
+        calculator.appendNumber(e.key);
+    } else if (e.key == "(") {
+        
     }
     
 }
