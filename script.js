@@ -30,36 +30,39 @@ class Calculator {
     }
     
     calculate() {
-        this.previousOperand = parseFloat(this.previousOperand);
-        this.currentOperand = parseFloat(this.currentOperand);
-        let total;
-        switch(this.operator) {
-            case '+':
-                total = this.add(this.previousOperand, this.currentOperand);
-                break;
-            case '−':
-                total = this.subtract(this.previousOperand, this.currentOperand);
-                break;
-            case '×':
-                total = this.multiply(this.previousOperand, this.currentOperand);
-                break;
-            case '÷':
-                total = this.divide(this.previousOperand, this.currentOperand);
-                break;
-        }        
-        console.log(this.previousOperand);
-        console.log(this.currentOperand);
-        console.log(this.operator);
-        
-        this.previousOperand = total; 
-        this.currentOperand = '';
-        this.operator = '';
+        if (this.isValid()) {
+            this.previousOperand = parseFloat(this.previousOperand);
+            this.currentOperand = parseFloat(this.currentOperand);
+            let total;
+            switch(this.operator) {
+                case '+':
+                    total = this.add(this.previousOperand, this.currentOperand);
+                    break;
+                case '−':
+                    total = this.subtract(this.previousOperand, this.currentOperand);
+                    break;
+                case '×':
+                    total = this.multiply(this.previousOperand, this.currentOperand);
+                    break;
+                case '÷':
+                    total = this.divide(this.previousOperand, this.currentOperand);
+                    break;
+            }        
+            
+            this.previousOperand = total; 
+            this.currentOperand = '';
+            this.operator = '';
+    
+            addDisplay("=" + total);
+            return Math.round((total + Number.EPSILON) * 100) / 100;
 
-        addDisplay("=" + total);
-        return total;
+        }
     }
 
     appendOperator(operator) { 
+        if (!this.operator == '') {
+            return;
+        }
         if (this.previousOperand == '') { 
             this.previousOperand = this.currentOperand;
             this.operator = operator;
@@ -81,7 +84,7 @@ class Calculator {
 
     convertOperator(operator) {
         switch (operator) { 
-            case "*" :
+            case '*' :
                 return '×';
             case '/':
                 return '÷';
@@ -128,12 +131,15 @@ for (let i = 0; i <= 9; i++) {
 
 
 let numbers = document.querySelectorAll('.number');
-let display = document.querySelector('#display');
+let display = document.querySelector('.display');
 let operators = document.querySelectorAll('.operator');
 let equalSign = document.querySelector('#equal-sign');
 let clear = document.querySelector('#clear');
 
+let calculator = new Calculator('', '', null);
+
 document.addEventListener('keydown', addCharacters, false); 
+display.innerHTML = '';
 
 
 function addCharacters(e) {
@@ -150,24 +156,21 @@ function addCharacters(e) {
         calculator.clear(); 
     } else if (e.key == ".") {
         calculator.appendNumber(e.key);
-    } else if (e.key == "(") {
-        
-    }
+    } 
     
 }
 
 function addDisplay(value) {
-    display.textContent += value;
+    display.innerHTML += value;
 }
 
 function removeDisplay(value) {
-    display.textContent = display.textContent.toString().slice(0, -1);
+    display.innerHTML = display.textContent.toString().slice(0, -1);
 }
 
-let calculator = new Calculator('', '', null);
 operators.forEach((operator) => {
     operator.addEventListener('click', () => {
-        calculator.appendOperator(calculator.convertOperator(operator.innerHTML));
+        calculator.appendOperator(operator.innerHTML);
     });
 });
 
@@ -179,7 +182,6 @@ numbers.forEach((number) => {
 
 equalSign.addEventListener('click', () => {
     calculator.calculate();
-
 });
 
 clear.addEventListener('click', () => { 
