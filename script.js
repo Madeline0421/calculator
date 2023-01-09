@@ -53,9 +53,9 @@ class Calculator {
             this.currentOperand = '';
             this.operator = '';
     
-            addDisplay("=" + total);
+            this.removeFullDisplay();
+            this.addDisplay(total);
             return Math.round((total + Number.EPSILON) * 100) / 100;
-
         }
     }
 
@@ -70,12 +70,12 @@ class Calculator {
         } else { 
             this.operator = operator;
         }
-        addDisplay(operator);
+        this.addDisplay(operator);
     }
 
     appendNumber(number) { 
         this.currentOperand += number.toString(); 
-        addDisplay(number);
+        this.addDisplay(number);
     }
 
     isValid() {
@@ -97,6 +97,18 @@ class Calculator {
 
     deleteNumber() {
         this.currentOperand = '';
+    }
+
+    addDisplay(value) {
+        display.innerHTML += value;
+    }
+    
+    removeValueDisplay(value) {
+        display.innerHTML = display.textContent.toString().slice(0, -1);
+    }
+
+    removeFullDisplay() {
+        display.innerHTML = '';
     }
 
 }
@@ -151,7 +163,7 @@ function addCharacters(e) {
         calculator.calculate();
     } else if (e.key == 'Backspace') {
         calculator.deleteNumber();
-        removeDisplay();
+        calculator.removeValueDisplay();
     } else if (e.key == "C" || e.key == "c") { 
         calculator.clear(); 
     } else if (e.key == ".") {
@@ -160,17 +172,11 @@ function addCharacters(e) {
     
 }
 
-function addDisplay(value) {
-    display.innerHTML += value;
-}
-
-function removeDisplay(value) {
-    display.innerHTML = display.textContent.toString().slice(0, -1);
-}
 
 operators.forEach((operator) => {
     operator.addEventListener('click', () => {
-        calculator.appendOperator(operator.innerHTML);
+        calculator.appendOperator(calculator.convertOperator(operator.innerHTML));
+        console.log(operator.innerHTML);
     });
 });
 
