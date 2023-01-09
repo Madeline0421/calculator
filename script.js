@@ -125,8 +125,13 @@ class Calculator {
     }
 
     changeSign() {
-        this.currentOperand *= -1;
-        display.innerHTML = this.currentOperand;
+        if (!this.previousOperand == '') { 
+            this.previousOperand *= -1;
+            display.innerHTML = this.previousOperand;
+        } else {
+            this.currentOperand *= -1;
+            display.innerHTML = this.currentOperand;
+        }
     }
 
 }
