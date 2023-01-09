@@ -10,7 +10,7 @@ class Calculator {
         this.previousOperand = '';
         this.currentOperand = '';
         this.operator = '';
-        display.textContent = '';
+        display.innerHTML = '';
     }
 
     add(num1, num2) {
@@ -27,6 +27,10 @@ class Calculator {
     
     divide(num1, num2) {
         return num1 / num2; 
+    }
+
+    exponent(num1, num2) {
+        return num1 ** num2;
     }
     
     calculate() {
@@ -46,6 +50,9 @@ class Calculator {
                     break;
                 case '÷':
                     total = this.divide(this.previousOperand, this.currentOperand);
+                    break;
+                case '^':
+                    total = this.exponent(this.previousOperand, this.currentOperand);
                     break;
             }        
             
@@ -96,6 +103,8 @@ class Calculator {
                 return '×';
             case '÷':
                 return '÷';
+            case '^':
+                return '^';
         }
     }
 
@@ -108,25 +117,20 @@ class Calculator {
     }
     
     removeValueDisplay(value) {
-        display.innerHTML = display.textContent.toString().slice(0, -1);
+        display.innerHTML = display.innerHTML.toString().slice(0, -1);
     }
 
     removeFullDisplay() {
         display.innerHTML = '';
     }
 
+    changeSign() {
+        this.currentOperand *= -1;
+        display.innerHTML = this.currentOperand;
+    }
+
 }
 
-// const aliasKeys = {
-//     "ctrl" : 17,
-//     "shift" : 16,
-//     "multiply" : 106,
-//     "add" : 107,
-//     "subtract" : 109,
-//     "decimal-point" : 110,
-//     "divide" : 111,
-//     "equal-sign" : 187,
-// }
 const aliasKeys = [];
 for (let i = 0; i <= 9; i++) {
     aliasKeys[i] = i;
@@ -137,6 +141,7 @@ let display = document.querySelector('.display');
 let operators = document.querySelectorAll('.operator');
 let equalSign = document.querySelector('#equal-sign');
 let clear = document.querySelector('#clear');
+let changeSign = document.querySelector('#change-sign');
 
 let calculator = new Calculator('', '', null);
 
@@ -158,6 +163,8 @@ function addCharacters(e) {
         calculator.clear(); 
     } else if (e.key == ".") {
         calculator.appendNumber(e.key);
+    } else if (e.key == "^") {
+        calculator.appendOperator(e.key);
     } 
     
 }
@@ -182,3 +189,7 @@ equalSign.addEventListener('click', () => {
 clear.addEventListener('click', () => { 
     calculator.clear();
 });
+
+changeSign.addEventListener('click', () => {
+    calculator.changeSign();
+})
