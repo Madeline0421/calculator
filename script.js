@@ -92,6 +92,10 @@ class Calculator {
                 return '−';
             case '+': 
                 return '+';
+            case '×':
+                return '×';
+            case '÷':
+                return '÷';
         }
     }
 
@@ -128,20 +132,6 @@ for (let i = 0; i <= 9; i++) {
     aliasKeys[i] = i;
 }
 
-// function checkKey(key) { 
-//     return key in keys;
-// }
-
-// function checkKeys() {
-//     let keylist = arguments;
-//     console.log("check");
-//     for (let i = 0; i < keylist.length; i++) {
-//         console.log(keylist[i]);
-//     }
-//     return true;
-// }
-
-
 let numbers = document.querySelectorAll('.number');
 let display = document.querySelector('.display');
 let operators = document.querySelectorAll('.operator');
@@ -176,7 +166,6 @@ function addCharacters(e) {
 operators.forEach((operator) => {
     operator.addEventListener('click', () => {
         calculator.appendOperator(calculator.convertOperator(operator.innerHTML));
-        console.log(operator.innerHTML);
     });
 });
 
